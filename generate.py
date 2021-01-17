@@ -1,6 +1,8 @@
 import random
 import decimal
-from openpyxl import Workbook
+#from openpyxl import Workbook
+import xlsxwriter
+import itertools
 
 
 rand_decimal = 0
@@ -8,7 +10,14 @@ converted_to_bin = 0
 valor_real = 0
 merito = 0
 lista = []
+lista_invertida = []
+lista_binary = []
+lista_realvalue = []
+lista_merito = []
+lista_roleta= []
+lista_aleatorio= []
 media_merito = 0
+
 
 
 def conv_to_bin(decimal):
@@ -68,16 +77,24 @@ def segmento_Roleta():
             break 
 
 def savetoexcel():
-    workbook = Workbook()
-    sheet = workbook.active
+    workbook = xlsxwriter.Workbook('GA.xlsx')
+    worksheet = workbook.add_worksheet()
+    row = 0
 
-    sheet["A1"] = "hello"
-    sheet["B1"] = "world!"
+    lista_invertida = transpose(lista)
+    print(lista_invertida)
 
-    for col, data in enumerate(array):
-    worksheet.write_column(row, col, data)
+    for col, data in enumerate(lista_invertida):
+        worksheet.write_column(row, col, data)
+    workbook.close()
 
-    workbook.save(filename="hello_world.xlsx")
+
+def transpose(array):
+    transposed_array = itertools.izip_longest(*array)
+
+    return array
+
+
 
 
 i = 1
@@ -86,7 +103,7 @@ while i<=20:
    converted_to_bin = conv_to_bin(rand_decimal)
    valor_real = calc_valor_real(rand_decimal)
    merito = func_avaliacao(valor_real)
-   print(rand_decimal," - ",converted_to_bin," - ",valor_real," - ",merito)
+  # print(rand_decimal," - ",converted_to_bin," - ",valor_real," - ",merito)
    lista.append([rand_decimal,converted_to_bin,valor_real,merito])
    i+=1
 
@@ -96,8 +113,10 @@ segmento_Roleta()
 generate_random(2)
 
 
-print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
+#print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
 
+
+savetoexcel()
 
 
 
