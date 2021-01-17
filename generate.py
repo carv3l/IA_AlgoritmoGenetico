@@ -1,6 +1,6 @@
 import random
 import decimal
-
+from openpyxl import Workbook
 
 
 rand_decimal = 0
@@ -67,11 +67,17 @@ def segmento_Roleta():
         except IndexError:
             break 
 
+def savetoexcel():
+    workbook = Workbook()
+    sheet = workbook.active
 
+    sheet["A1"] = "hello"
+    sheet["B1"] = "world!"
 
+    for col, data in enumerate(array):
+    worksheet.write_column(row, col, data)
 
-
-
+    workbook.save(filename="hello_world.xlsx")
 
 
 i = 1
