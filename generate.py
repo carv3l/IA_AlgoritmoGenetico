@@ -84,9 +84,11 @@ while i<=20:
    lista.append([rand_decimal,converted_to_bin,valor_real,merito])
    i+=1
 
+
 calc_average()
 segmento_Roleta()
 generate_random(2)
+
 
 print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
 
