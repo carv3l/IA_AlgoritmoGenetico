@@ -6,7 +6,7 @@ Isto permite agilizar a criação do Algoritmo Genético
 
 Python 3.9 ou 3.7
 
-``` $ pip install openpyxl ```
+``` $ pip install xlsxwriter ```
 
 ## Usage
 

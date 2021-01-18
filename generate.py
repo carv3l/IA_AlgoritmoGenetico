@@ -3,6 +3,7 @@ import decimal
 #from openpyxl import Workbook
 import xlsxwriter
 import itertools
+import numpy as np
 
 
 rand_decimal = 0
@@ -11,12 +12,10 @@ valor_real = 0
 merito = 0
 lista = []
 lista_invertida = []
-lista_binary = []
-lista_realvalue = []
-lista_merito = []
-lista_roleta= []
-lista_aleatorio= []
+lista_avaliacao =  []
 media_merito = 0
+sT_maxvalue =0
+nD_maxvalue = 0
 
 
 
@@ -76,15 +75,13 @@ def segmento_Roleta():
         except IndexError:
             break 
 
-def savetoexcel():
+def savetoexcel():## PARSAR PARA EXCEL
     workbook = xlsxwriter.Workbook('GA.xlsx')
     worksheet = workbook.add_worksheet()
     row = 0
 
     lista_invertida = transpose(lista)
    # print(lista_invertida)
-
-
     for col, data in enumerate(lista_invertida):
         worksheet.write_column(row, col, data)
     workbook.close()
@@ -92,6 +89,20 @@ def savetoexcel():
 
 def transpose(array):
     return list(itertools.zip_longest(*array))
+
+def get_2_highest():
+     for k in range(len(lista)+1):
+        try:
+            lista_avaliacao.append(lista[k][3])
+        except IndexError:
+            break
+
+     lista_avaliacao.sort()
+
+
+     print(lista_avaliacao[-1])
+     print(lista_avaliacao[-2])
+
   
 
 i = 1
@@ -108,15 +119,11 @@ while i<=20:
 calc_average()
 segmento_Roleta()
 generate_random(2)
+get_2_highest()
 
 
 #print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
 
 
-savetoexcel()
-
-
-
-#print(lista)
-
+#savetoexcel()
 k = input("Press key to exit")
