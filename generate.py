@@ -82,7 +82,8 @@ def savetoexcel():
     row = 0
 
     lista_invertida = transpose(lista)
-    print(lista_invertida)
+   # print(lista_invertida)
+
 
     for col, data in enumerate(lista_invertida):
         worksheet.write_column(row, col, data)
@@ -90,12 +91,8 @@ def savetoexcel():
 
 
 def transpose(array):
-    transposed_array = itertools.izip_longest(*array)
-
-    return array
-
-
-
+    return list(itertools.zip_longest(*array))
+  
 
 i = 1
 while i<=20:
@@ -103,7 +100,7 @@ while i<=20:
    converted_to_bin = conv_to_bin(rand_decimal)
    valor_real = calc_valor_real(rand_decimal)
    merito = func_avaliacao(valor_real)
-  # print(rand_decimal," - ",converted_to_bin," - ",valor_real," - ",merito)
+   print(rand_decimal," - ",converted_to_bin," - ",valor_real," - ",merito)
    lista.append([rand_decimal,converted_to_bin,valor_real,merito])
    i+=1
 
