@@ -6,6 +6,7 @@ import itertools
 import numpy as np
 
 
+numero_geracoes = 0
 rand_decimal = 0
 converted_to_bin = 0
 valor_real = 0
@@ -21,6 +22,7 @@ sT_maxvalue =0
 nD_maxvalue = 0
 tamanho_população = 0
 val_prob_recombinacao = 0
+tamanho_individuo_mutacao = 0
 
 
 
@@ -65,8 +67,10 @@ def generate_random(switch):#GERAR ALEATORIO
             except IndexError:
                 break 
             j+=2
-
-        
+    elif switch == 4:
+        return random.randint(0,tamanho_população-1)
+    elif switch == 5:
+        return random.randint(0,17)
         
 def calc_average():
     soma_atual = 0
@@ -194,7 +198,6 @@ def recombinacao(ptcorte,firstbin,secondbin):
     child_1 = replace_str_index(secondbin,0,int(ptcorte),firsthalf)
     child_2 = replace_str_index(firstbin,0,int(ptcorte),secondhalf)
 
-    
     return child_1, child_2
 
 
@@ -222,15 +225,106 @@ def probabilidade_recombinacao(prob,corte):
         j+=2
 
 
+
+def mutacao():
+    j = 0
+    while j <= (len(lista)-1):
+        try:
+           lista[j].extend([lista[j][9]])
+        except IndexError:
+            break
+        j+=1
+
+    to_mutate = 0
+    gene_pos = 0
+    after_mutate = 0
+    val = 0
+    selector_number = round(0.005 * tamanho_população * 18)
+    print(selector_number)
+    i = 1
+    while i <= selector_number:
+        
+        val = generate_random(4)
+
+        print("VAl",val)
+        to_mutate = lista[val][9]
+
+        #tamanho_individuo_mutacao = len(to_mutate)-1
+
+        gene_pos = generate_random(5)
+
+        if(to_mutate[gene_pos] == '0'):
+            after_mutate = replace_str_index(to_mutate,gene_pos,1,'1')
+        else:
+            after_mutate = replace_str_index(to_mutate,gene_pos,1,'0')
+
+        print(to_mutate)  
+        print(gene_pos)
+        print(to_mutate[gene_pos])
+        print(after_mutate)
+        lista[val][10] = after_mutate
+
+        i+=1
+
+
+def reset_and_set():
+    lista_mutacao = []
+    lista_decimais = []
+    for j in range(len(lista)+1):
+            try:
+                lista_mutacao.append(lista[j][10])
+            except IndexError:
+                break
+
+    lista.clear()
+    
+
+    for i in range(len(lista_mutacao)+1):
+            try:
+                lista_decimais.append(int(lista_mutacao[i],2))
+               # lista.insert(1,lista_mutacao[i])
+            except IndexError:
+                break
+                
+   # print(lista_mutacao)
+   # print(lista_decimais)
+
+    i = 0
+    while i <= len(lista_mutacao)-1:
+        valor_real = calc_valor_real(lista_decimais[i])
+        merito = func_avaliacao(valor_real)
+        lista.append([lista_decimais[i],lista_mutacao[i],valor_real,merito])
+        i+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  ################### INICIO DO CÓDIGO #####################################         
+
+
+numero_geracoes = input("INTRODUZA O NUMERO DE GERACOES:")
 
 while True:
     tamanho_população = int(input("Tamanho da População (Número Inteiro par ) :"))
     if( (tamanho_população % 2) == 0):
         break
 
-i = 1
+val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
+pontosCorte = input("INTRODUZA NUMERO DO PONTO DE CORTE:")
 
+
+
+i = 1
 while i<=tamanho_população:
    rand_decimal = generate_random(1)
    converted_to_bin = conv_to_bin(rand_decimal)
@@ -241,34 +335,32 @@ while i<=tamanho_população:
    i+=1
 
 
-calc_average()
-segmento_Roleta()
-generate_random(2)
-get_2_highest()
-
-#taxa_recombinacao(tamanho_população)
-
-
-locate_in_interval()
-generate_random(3)
-
-
-
-val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
-pontosCorte = input("INTRODUZA NUMERO DO PONTO DE CORTE:")
-
-probabilidade_recombinacao(val_prob_recombinacao,pontosCorte)
+j = 1
+while j <= int(numero_geracoes):
+    calc_average()
+    segmento_Roleta()
+    generate_random(2)
+    get_2_highest()
+    locate_in_interval()
+    generate_random(3)
+    probabilidade_recombinacao(val_prob_recombinacao,pontosCorte)
+    mutacao()
+    print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
+    reset_and_set()
+    j+=1
 
 
 
-#recombinacao(pontosCorte)
 
 
 
-print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
+
+
+
+
+
 
 state = input("PARSAR PARA EXCEL?  (1  = sim , 0 = não) : ")
-
 if state == '1' :
     savetoexcel()
 else:
