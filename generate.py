@@ -19,6 +19,7 @@ posicao_roleta= []
 media_merito = 0
 sT_maxvalue =0
 nD_maxvalue = 0
+tamanho_população = 0
 
 
 
@@ -199,19 +200,13 @@ def recombinacao(ptcorte):
                 break     
           
 
-
-
-
-
-
-    
-#If you have a range xmin < x < xmax then this should work (taking x=filename[:,0] and y=filename[:,1]) :
-
-  #   idx = np.where(y==np.max(y[(x>xmin)&(x<xmax)]))[0][0]
-  
+while True:
+    tamanho_população = int(input("Tamanho da População (Número Inteiro pár ) :"))
+    if( (tamanho_população % 2) == 0):
+        break
 
 i = 1
-while i<=20:
+while i<=tamanho_população:
    rand_decimal = generate_random(1)
    converted_to_bin = conv_to_bin(rand_decimal)
    valor_real = calc_valor_real(rand_decimal)
