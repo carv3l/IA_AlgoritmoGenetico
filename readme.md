@@ -14,7 +14,7 @@ Apenas correr o programa
 
 Vão aparecer dois inputs no script
 
-##### Numero do ponto de Corte:
+#### Numero do ponto de Corte:
 
  ``` $ INTRODUZA PONTOS DE CORTE: ```
 
@@ -22,7 +22,7 @@ Vão aparecer dois inputs no script
  Ter em atenção que só pode ir até 17
 
 
-##### Se quer guardar a geração numa SpreadSheet:
+#### Se quer guardar a geração numa SpreadSheet:
 
  ``` $ PARSAR PARA EXCEL?  (1  = sim , 0 = não) :  ```
 
