@@ -45,7 +45,7 @@ def generate_random(switch):#GERAR ALEATORIO
         lista[0].extend([0])
         lista[1].extend([0])
         j = 2
-        while j <= 20:
+        while j <= tamanho_população:
             try:
                 #print(j)
                 lista[j].extend([round(random.uniform(0, 1),3)])#GERAR ALEATORIO ENTRE 0 e 1 E ARREDONDAR PARA 3 CASAS DECIMAIS
@@ -135,7 +135,7 @@ def position_bin_to_list(array):
 
 def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA ROLETA
     k = 2
-    while k <= 20:
+    while k <= tamanho_população:
         try:
             lista_aleatorio.append(lista[k][6])
         except IndexError:
