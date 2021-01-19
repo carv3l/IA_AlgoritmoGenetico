@@ -201,7 +201,7 @@ def recombinacao(ptcorte):
           
 
 while True:
-    tamanho_população = int(input("Tamanho da População (Número Inteiro pár ) :"))
+    tamanho_população = int(input("Tamanho da População (Número Inteiro par ) :"))
     if( (tamanho_população % 2) == 0):
         break
 
