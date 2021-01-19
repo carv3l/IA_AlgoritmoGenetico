@@ -90,6 +90,7 @@ def savetoexcel():## PARSAR PARA EXCEL
     for col, data in enumerate(lista_invertida):
         worksheet.write_column(row, col, data)
     workbook.close()
+    print("PARSADO COM SUCESSO!!!!!")
 
 
 def transpose(array):
@@ -119,8 +120,8 @@ def get_2_highest():
                 break     
 
 
-     print(lista_avaliacao[-1])
-     print(lista_avaliacao[-2])
+   ##  print(lista_avaliacao[-1]) VALOR MAIS ALTO
+   ##  print(lista_avaliacao[-2]) 2 VALOR MAIS ALTO
 
 def position_bin_to_list(array):
 
@@ -132,7 +133,6 @@ def position_bin_to_list(array):
                 break     
 
 def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA ROLETA
-    print("POSI",posicao_roleta)
     k = 2
     while k <= 20:
         try:
@@ -151,15 +151,15 @@ def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA 
         for i in range(len(lista_roleta)+1):
             try:
                 if(aleatorio[1]<=lista_roleta[i]):
-                    print("ALEATORIO:",aleatorio[1],">=",lista_roleta[i])
-                    print(" ---")
+                ##    print("ALEATORIO:",aleatorio[1],">=",lista_roleta[i])
+                ##    print(" ---")
                     posicao_roleta.append(i)
                     break          
             except IndexError:
                 break
-    print("Pos",posicao_roleta)
-    print("R",lista_roleta)
-    print("ALE",lista_aleatorio)
+  ##  print("Pos",posicao_roleta)
+  ##  print("R",lista_roleta)
+  ##  print("ALE",lista_aleatorio)
 
     position_bin_to_list(posicao_roleta)
 
@@ -190,7 +190,7 @@ def recombinacao(ptcorte):
             firsthalf = firstbin[0:int(ptcorte)]
             secondhalf = secondbin[0:int(ptcorte)]
 
-            print("firsthalf", firsthalf,"secondhalf",secondhalf)
+           # print("firsthalf", firsthalf,"secondhalf",secondhalf)
 
             lista[j].extend([replace_str_index(secondbin,0,int(ptcorte),firsthalf)])
             lista[j+1].extend([replace_str_index(firstbin,0,int(ptcorte),secondhalf)])
@@ -239,7 +239,13 @@ recombinacao(pontosCorte)
 
 
 print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
-#savetoexcel()
+
+state = input("PARSAR PARA EXCEL?  (1  = sim , 0 = não) : ")
+
+if state == '1' :
+    savetoexcel()
+else:
+    pass
 
 
 
