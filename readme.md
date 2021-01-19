@@ -12,7 +12,16 @@ Python 3.9 ou 3.7
 
 Apenas correr o programa
 
-Vão aparecer dois inputs no script
+### Inputs no script
+
+
+#### Tamanho da População:
+
+ ``` $ Tamanho da População (Número Inteiro par ) : ```
+
+ Aqui introduzir no número inteiro o tamanho da população a gerar
+ Ter em atenção que só pode ser introduzido números pares
+ 
 
 #### Numero do ponto de Corte:
 
