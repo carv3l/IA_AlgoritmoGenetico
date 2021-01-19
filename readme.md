@@ -25,7 +25,7 @@ Apenas correr o programa
 
 #### Numero do ponto de Corte:
 
- ``` $ INTRODUZA PONTOS DE CORTE: ```
+ ``` $ INTRODUZA NUMERO DO PONTO DE CORTE: ```
 
  Aqui introduzir no número inteiro onde cortar no numero Binário
  Ter em atenção que só pode ir até 17
@@ -42,6 +42,22 @@ Apenas correr o programa
 
 
 ### Examples
+
+Se o valor aleatorio for inferior à probabilidade de recombinação, faz-se a recombinação com o ponto de corte
+Se o valor aleatorio for superior à probabilidade de recombinação, os filhos ficam iguais aos progenitores, ou seja não se faz a recombinação
+
+A probabilidade de mutação tem que ter em conta 3 coisas:
+-Tamanho da População
+-Probabilidade de Mutação 
+-Numero de Bits
+
+probabilidadeMutação * tamanhoPopulação * NumeroBits = Numero de Individuos a serem mutados aleatóriamente
+
+EXEMPLO
+0,005 * 20 * 18 = 1,8 = 2
+
+
+
 
 ## Notas
 
