@@ -20,6 +20,7 @@ media_merito = 0
 sT_maxvalue =0
 nD_maxvalue = 0
 tamanho_população = 0
+val_prob_recombinacao = 0
 
 
 
@@ -52,6 +53,18 @@ def generate_random(switch):#GERAR ALEATORIO
             except IndexError:
                 break 
             j+=1
+    elif switch == 3:
+        lista[0].extend([0])
+        lista[1].extend([0])
+        j = 2
+        while j <= tamanho_população:
+            try:
+                randval = round(random.uniform(0, 1),2)
+                lista[j].extend([randval])#GERAR ALEATORIO ENTRE 0 e 1 E ARREDONDAR PARA 3 CASAS DECIMAIS
+                lista[j+1].extend([randval])#GERAR ALEATORIO ENTRE 0 e 1 E ARREDONDAR PARA 3 CASAS DECIMAIS
+            except IndexError:
+                break 
+            j+=2
 
         
         
@@ -167,38 +180,49 @@ def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA 
 
 
 
-
 def replace_str_index(text,index=0,size=0,replacement=''):
     return '%s%s%s'%(text[:index],replacement,text[index+size:])
 
 
-def recombinacao(ptcorte):
-    firstbin = 0
-    secondbin = 0
-
+def recombinacao(ptcorte,firstbin,secondbin):
     firsthalf = 0
     secondhalf = 0
 
+    firsthalf = firstbin[0:int(ptcorte)]
+    secondhalf = secondbin[0:int(ptcorte)]
 
-    j = 2
+    child_1 = replace_str_index(secondbin,0,int(ptcorte),firsthalf)
+    child_2 = replace_str_index(firstbin,0,int(ptcorte),secondhalf)
+
+    
+    return child_1, child_2
+
+
+
+
+def probabilidade_recombinacao(prob,corte):
+    firstbin = 0
+    secondbin = 0
     lista[0].extend([lista[0][7]])
     lista[1].extend([lista[1][7]])
+    j = 2
     while j <= (len(lista)):
         try:
-            firstbin = lista[j][7]
-            secondbin = lista[j+1][7]
-
-            firsthalf = firstbin[0:int(ptcorte)]
-            secondhalf = secondbin[0:int(ptcorte)]
-
-           # print("firsthalf", firsthalf,"secondhalf",secondhalf)
-
-            lista[j].extend([replace_str_index(secondbin,0,int(ptcorte),firsthalf)])
-            lista[j+1].extend([replace_str_index(firstbin,0,int(ptcorte),secondhalf)])
-            j+=2
+            if(lista[j][8] <= float(prob) and lista[j+1][8] <= float(prob)):
+                firstbin = lista[j][7]
+                secondbin = lista[j+1][7]
+                child1 , child2 =  recombinacao(corte,firstbin,secondbin)
+                lista[j].extend([child1])
+                lista[j+1].extend([child2])
+            elif(lista[j][8] > float(prob) and lista[j+1][8] > float(prob)):
+                lista[j].extend([lista[j][7]])
+                lista[j+1].extend([lista[j+1][7]])
         except IndexError:
-                break     
-          
+            break
+        j+=2
+
+
+ ################### INICIO DO CÓDIGO #####################################         
 
 while True:
     tamanho_população = int(input("Tamanho da População (Número Inteiro par ) :"))
@@ -206,6 +230,7 @@ while True:
         break
 
 i = 1
+
 while i<=tamanho_população:
    rand_decimal = generate_random(1)
    converted_to_bin = conv_to_bin(rand_decimal)
@@ -220,16 +245,23 @@ calc_average()
 segmento_Roleta()
 generate_random(2)
 get_2_highest()
+
+#taxa_recombinacao(tamanho_população)
+
+
 locate_in_interval()
+generate_random(3)
 
 
 
+val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
+pontosCorte = input("INTRODUZA NUMERO DO PONTO DE CORTE:")
 
-pontosCorte = input("INTRODUZA PONTOS DE CORTE:")
+probabilidade_recombinacao(val_prob_recombinacao,pontosCorte)
 
 
 
-recombinacao(pontosCorte)
+#recombinacao(pontosCorte)
 
 
 
