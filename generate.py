@@ -24,7 +24,10 @@ tamanho_população = 0
 val_prob_recombinacao = 0
 tamanho_individuo_mutacao = 0
 
-row = 1
+rowf = 1
+
+saveiter = 0
+workbook = xlsxwriter.Workbook('GA.xlsx')
 
 
 
@@ -100,17 +103,16 @@ def segmento_Roleta():
         except IndexError:
             break 
 
-def savetoexcel(iteration):## PARSAR PARA EXCEL
-    workbook = xlsxwriter.Workbook('GA.xlsx')
-    if
-    worksheet = workbook.add_worksheet('GA')
-    row = 1
+def savetoexcel(iteration):## PARSAR PARA EXCEL    
+    worksheet = workbook.add_worksheet('GER '+str(iteration))
+    print("GER "+str(iteration))
     lista_invertida = transpose(lista)
+    row = 1 
     # print(lista_invertida)
     for col, data in enumerate(lista_invertida):
-        worksheet.write_column(row*iteration, col, data)
-    worksheet = workbook.add_worksheet('AG')
-    workbook.close()
+        worksheet.write_column(row, col, data)
+
+    
     
     print("PARSADO COM SUCESSO!!!!!")
 
@@ -351,6 +353,7 @@ while j <= int(numero_geracoes):
     print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
     reset_and_set()
     j+=1
+workbook.close()
 
 
 
