@@ -210,7 +210,7 @@ def recombinacao(ptcorte,firstbin,secondbin):
 
 
 
-def probabilidade_recombinacao(prob,corte):
+def probabilidade_recombinacao(prob):
     firstbin = 0
     secondbin = 0
     lista[0].extend([lista[0][7]])
@@ -218,10 +218,11 @@ def probabilidade_recombinacao(prob,corte):
     j = 2
     while j <= (len(lista)):
         try:
+            
             if(lista[j][8] <= float(prob) and lista[j+1][8] <= float(prob)):
                 firstbin = lista[j][7]
                 secondbin = lista[j+1][7]
-                child1 , child2 =  recombinacao(corte,firstbin,secondbin)
+                child1 , child2 =  recombinacao(lista[j][9],firstbin,secondbin)
                 lista[j].extend([child1])
                 lista[j+1].extend([child2])
             elif(lista[j][8] > float(prob) and lista[j+1][8] > float(prob)):
@@ -233,11 +234,25 @@ def probabilidade_recombinacao(prob,corte):
 
 
 
+def generate_pontosCorte():
+    i = 0
+    while i <= len(lista):
+        try:
+            corte = generate_random(5)
+            lista[i].extend([corte])
+            lista[i+1].extend([corte])
+        except IndexError:
+            break
+        i +=2
+   
+
+
+
 def mutacao():
     j = 0
     while j <= (len(lista)-1):
         try:
-           lista[j].extend([lista[j][9]])
+           lista[j].extend([lista[j][10]])
         except IndexError:
             break
         j+=1
@@ -254,7 +269,7 @@ def mutacao():
         val = generate_random(4)
 
       ##  print("VAl",val)
-        to_mutate = lista[val][9]
+        to_mutate = lista[val][11]
 
         #tamanho_individuo_mutacao = len(to_mutate)-1
 
@@ -279,7 +294,7 @@ def reset_and_set():
     lista_decimais = []
     for j in range(len(lista)+1):
             try:
-                lista_mutacao.append(lista[j][10])
+                lista_mutacao.append(lista[j][11])
             except IndexError:
                 break
 
@@ -324,9 +339,6 @@ while True:
         break
 
 val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
-pontosCorte = input("INTRODUZA NUMERO DO PONTO DE CORTE:")
-
-
 
 i = 1
 while i<=tamanho_população:
@@ -347,11 +359,12 @@ while j <= int(numero_geracoes):
     get_2_highest()
     locate_in_interval()
     generate_random(3)
-    probabilidade_recombinacao(val_prob_recombinacao,pontosCorte)
+    generate_pontosCorte()
+    probabilidade_recombinacao(val_prob_recombinacao)
     mutacao()
     if int(state) == 1:
         savetoexcel(j)
-   # print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
+    print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
     reset_and_set()
     j+=1
 workbook.close()
