@@ -4,6 +4,7 @@ import decimal
 import xlsxwriter
 import itertools
 import numpy as np
+import os
 
 
 numero_geracoes = 0
@@ -84,7 +85,10 @@ def calc_average():
             soma_atual +=lista[j][3] 
         except IndexError:
             break
-    print(soma_atual)
+    
+   # print(round(soma_atual,4))
+    print("Média: ",round(soma_atual/(len(lista)),4))
+
     for l in range(len(lista)+1):
         prob = 0
         try:
@@ -105,16 +109,12 @@ def segmento_Roleta():
 
 def savetoexcel(iteration):## PARSAR PARA EXCEL    
     worksheet = workbook.add_worksheet('GER '+str(iteration))
-    print("GER "+str(iteration))
     lista_invertida = transpose(lista)
     row = 1 
     # print(lista_invertida)
     for col, data in enumerate(lista_invertida):
         worksheet.write_column(row, col, data)
-
-    
-    
-    print("PARSADO COM SUCESSO!!!!!")
+    print("Salvo em excel como GER",str(iteration))
 
 
 def transpose(array):
@@ -128,6 +128,7 @@ def get_2_highest():
             break
 
      lista_avaliacao.sort()
+     print("Melhor Individuo: ",round(lista_avaliacao[-1],4))
      
      for j in range(len(lista)+1):
             try:
@@ -246,13 +247,13 @@ def mutacao():
     after_mutate = 0
     val = 0
     selector_number = round(0.005 * tamanho_população * 18)
-    print(selector_number)
+   ## print(selector_number)
     i = 1
     while i <= selector_number:
         
         val = generate_random(4)
 
-        print("VAl",val)
+      ##  print("VAl",val)
         to_mutate = lista[val][9]
 
         #tamanho_individuo_mutacao = len(to_mutate)-1
@@ -264,10 +265,10 @@ def mutacao():
         else:
             after_mutate = replace_str_index(to_mutate,gene_pos,1,'0')
 
-        print(to_mutate)  
-        print(gene_pos)
-        print(to_mutate[gene_pos])
-        print(after_mutate)
+      ##  print(to_mutate)  
+      ##  print(gene_pos)
+      ##  print(to_mutate[gene_pos])
+      ##  print(after_mutate)
         lista[val][10] = after_mutate
 
         i+=1
@@ -303,8 +304,8 @@ def reset_and_set():
         i+=1
 
 
-
-
+def clear():    #Function to clear console after exit input
+    os.system('cls' if os.name=='nt' else 'clear')
 
 
  ################### INICIO DO CÓDIGO #####################################         
@@ -350,14 +351,11 @@ while j <= int(numero_geracoes):
     mutacao()
     if int(state) == 1:
         savetoexcel(j)
-    print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
+   # print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
     reset_and_set()
     j+=1
 workbook.close()
 
 
-
-
-
-
-k = input("Press key to exit")
+k = input("Press key to exit") 
+clear()
