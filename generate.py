@@ -30,6 +30,11 @@ rowf = 1
 saveiter = 0
 workbook = xlsxwriter.Workbook('GA.xlsx')
 
+def closeExcelIfOpen():
+    fo = open(r'GA.xlsx')
+    print("Name of the file: ", fo.name)
+    os.close(fo.fileno())
+
 
 
 def conv_to_bin(decimal):
@@ -109,10 +114,24 @@ def segmento_Roleta():
 
 def savetoexcel(iteration):## PARSAR PARA EXCEL    
     worksheet = workbook.add_worksheet('GER '+str(iteration))
+    worksheet.write(0, 0, 'Decimal')          # Write em excel na primeira linha primeira coluna
+    worksheet.write(0, 1, 'Binário')          
+    worksheet.write(0, 2, 'Valor Real')         
+    worksheet.write(0, 3, 'Função Avaliação')         
+    worksheet.write(0, 4, 'Probabilidade de ser Selecionada')         
+    worksheet.write(0, 5, 'Segmento da Roleta')         
+    worksheet.write(0, 6, 'Aleatório Roleta')         
+    worksheet.write(0, 7, 'Individuo Selecionado') 
+    worksheet.write(0, 8, 'Probabilidade de Recombinação')
+    worksheet.write(0, 9, 'Ponto de Corte Aleatório') 
+    worksheet.write(0, 10, 'Recombinação')
+    worksheet.write(0, 11, 'Mutação')       
+
     lista_invertida = transpose(lista)
     row = 1 
     # print(lista_invertida)
     for col, data in enumerate(lista_invertida):
+        worksheet.set_column(col,col,len(data))
         worksheet.write_column(row, col, data)
     print("Salvo em excel como GER",str(iteration))
 
@@ -189,8 +208,6 @@ def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA 
     position_bin_to_list(posicao_roleta)
 
 
-
-
 def replace_str_index(text,index=0,size=0,replacement=''):
     return '%s%s%s'%(text[:index],replacement,text[index+size:])
 
@@ -206,9 +223,6 @@ def recombinacao(ptcorte,firstbin,secondbin):
     child_2 = replace_str_index(firstbin,0,int(ptcorte),secondhalf)
 
     return child_1, child_2
-
-
-
 
 def probabilidade_recombinacao(prob):
     firstbin = 0
@@ -325,6 +339,7 @@ def clear():    #Function to clear console after exit input
 
  ################### INICIO DO CÓDIGO #####################################         
 
+##closeExcelIfOpen()
 
 while True:
     state = input("PARSAR PARA EXCEL?  (1  = sim , 0 = não) : ")
@@ -340,6 +355,8 @@ while True:
 
 val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
 
+state_view = input("PRETENDE VER A LISTA ? (1  = sim , 0 = não):")
+
 i = 1
 while i<=tamanho_população:
    rand_decimal = generate_random(1)
@@ -349,7 +366,6 @@ while i<=tamanho_população:
 #   print(rand_decimal," - ",converted_to_bin," - ",valor_real," - ",merito)
    lista.append([rand_decimal,converted_to_bin,valor_real,merito])
    i+=1
-
 
 j = 1
 while j <= int(numero_geracoes):
@@ -364,7 +380,8 @@ while j <= int(numero_geracoes):
     mutacao()
     if int(state) == 1:
         savetoexcel(j)
-    print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
+    if int(state_view) == 1:
+        print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
     reset_and_set()
     j+=1
 workbook.close()
