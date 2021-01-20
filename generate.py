@@ -24,6 +24,8 @@ tamanho_população = 0
 val_prob_recombinacao = 0
 tamanho_individuo_mutacao = 0
 
+row = 1
+
 
 
 def conv_to_bin(decimal):
@@ -98,16 +100,18 @@ def segmento_Roleta():
         except IndexError:
             break 
 
-def savetoexcel():## PARSAR PARA EXCEL
+def savetoexcel(iteration):## PARSAR PARA EXCEL
     workbook = xlsxwriter.Workbook('GA.xlsx')
-    worksheet = workbook.add_worksheet()
-    row = 0
-
+    if
+    worksheet = workbook.add_worksheet('GA')
+    row = 1
     lista_invertida = transpose(lista)
-   # print(lista_invertida)
+    # print(lista_invertida)
     for col, data in enumerate(lista_invertida):
-        worksheet.write_column(row, col, data)
+        worksheet.write_column(row*iteration, col, data)
+    worksheet = workbook.add_worksheet('AG')
     workbook.close()
+    
     print("PARSADO COM SUCESSO!!!!!")
 
 
@@ -301,16 +305,13 @@ def reset_and_set():
 
 
 
-
-
-
-
-
-
-
-
  ################### INICIO DO CÓDIGO #####################################         
 
+
+while True:
+    state = input("PARSAR PARA EXCEL?  (1  = sim , 0 = não) : ")
+    if(int(state) == 0 or int(state) == 1):
+        break
 
 numero_geracoes = input("INTRODUZA O NUMERO DE GERACOES:")
 
@@ -345,26 +346,13 @@ while j <= int(numero_geracoes):
     generate_random(3)
     probabilidade_recombinacao(val_prob_recombinacao,pontosCorte)
     mutacao()
-    print ('\n'.join([ str(myelement) for myelement in lista])) ##IMprimir elemento por linha
+    if int(state) == 1:
+        savetoexcel(j)
+    print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
     reset_and_set()
     j+=1
 
 
-
-
-
-
-
-
-
-
-
-
-state = input("PARSAR PARA EXCEL?  (1  = sim , 0 = não) : ")
-if state == '1' :
-    savetoexcel()
-else:
-    pass
 
 
 
