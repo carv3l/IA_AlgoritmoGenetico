@@ -18,6 +18,7 @@ valor_real = 0
 merito = 0
 tamanho_população = 0
 val_prob_recombinacao = 0
+round_value = 0
 
 
 
@@ -67,10 +68,10 @@ def conv_to_bin(decimal):
     return valor_bin
 
 def calc_valor_real(decimal):
-    return 1 + decimal *(24/(pow(2,18)-1))
+    return round(1 + decimal *(24/(pow(2,18)-1)),int(round_value))
     
 def func_avaliacao(value_real):
-    return pow((value_real-15),2)
+    return round(pow((value_real-15),2),int(round_value))
 
 def generate_random(switch):#GERAR ALEATORIO
     if switch == 1:
@@ -112,12 +113,12 @@ def calc_average():
             break
     
    # print(round(soma_atual,4))
-    print("Média: ",round(soma_atual/(len(lista)),4))
+    print("Média: ",round(soma_atual/(len(lista)),int(round_value)))
 
     for l in range(len(lista)+1):
         prob = 0
         try:
-            prob = lista[l][col_avaliacao]/soma_atual
+            prob = round((lista[l][col_avaliacao]/soma_atual),int(round_value))
             lista[l].extend([prob])
         except IndexError:
             break 
@@ -127,7 +128,7 @@ def segmento_Roleta():
     for k in range(len(lista)+1):
         try:
             roleta_value += lista[k][col_prob_select]
-            lista[k].extend([round(roleta_value,3)])
+            lista[k].extend([round(roleta_value,int(round_value))])
         except IndexError:
             break 
 
@@ -167,7 +168,7 @@ def get_2_highest():
         
      lista_avaliacao.sort()
      
-     print("Melhor Individuo: ",round(lista_avaliacao[-1],4))
+     print("Melhor Individuo: ",round(lista_avaliacao[-1],int(round_value)))
      
      for j in range(len(lista)+1):
             try:
@@ -380,6 +381,9 @@ while True:
     tamanho_população = int(input("Tamanho da População (Número Inteiro par ) :"))
     if( (tamanho_população % 2) == 0):
         break
+
+
+round_value = input("INTRODUZA O NUMERO DE CASAS DECIMAIS:")
 
 val_prob_recombinacao = input("INTRODUZA A PROBABILIDADE DE RECOMBINAÇÃO:")
 
