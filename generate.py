@@ -25,7 +25,22 @@ tamanho_população = 0
 val_prob_recombinacao = 0
 tamanho_individuo_mutacao = 0
 
-rowf = 1
+col_decimal = 0
+col_binario = 1
+col_valoreal = 2
+col_avaliacao = 3
+col_prob_select = 4
+col_seg_roleta = 5
+col_aleatorio_roleta = 6
+col_cromossoma_selected = 8
+col_recomb_prob = 9
+col_pontoCorte = 10
+col_recombinacao = 11
+col_mutacao = 12
+#col_
+
+
+
 
 saveiter = 0
 workbook = xlsxwriter.Workbook('GA.xlsx')
@@ -87,7 +102,7 @@ def calc_average():
     soma_atual = 0
     for j in range(len(lista)+1):
         try:
-            soma_atual +=lista[j][3] 
+            soma_atual +=lista[j][col_avaliacao] 
         except IndexError:
             break
     
@@ -97,7 +112,7 @@ def calc_average():
     for l in range(len(lista)+1):
         prob = 0
         try:
-            prob = lista[l][3]/soma_atual
+            prob = lista[l][col_avaliacao]/soma_atual
             lista[l].extend([prob])
         except IndexError:
             break 
@@ -107,7 +122,7 @@ def segmento_Roleta():
     roleta_value = 0
     for k in range(len(lista)+1):
         try:
-            roleta_value += lista[k][4]
+            roleta_value += lista[k][col_prob_select]
             lista[k].extend([round(roleta_value,3)])
         except IndexError:
             break 
@@ -120,12 +135,13 @@ def savetoexcel(iteration):## PARSAR PARA EXCEL
     worksheet.write(0, 3, 'Função Avaliação')         
     worksheet.write(0, 4, 'Probabilidade de ser Selecionada')         
     worksheet.write(0, 5, 'Segmento da Roleta')         
-    worksheet.write(0, 6, 'Aleatório Roleta')         
-    worksheet.write(0, 7, 'Individuo Selecionado') 
-    worksheet.write(0, 8, 'Probabilidade de Recombinação')
-    worksheet.write(0, 9, 'Ponto de Corte Aleatório') 
-    worksheet.write(0, 10, 'Recombinação')
-    worksheet.write(0, 11, 'Mutação')       
+    worksheet.write(0, 6, 'Aleatório Roleta')   
+    worksheet.write(0, 7, 'Pai Selecionado')       
+    worksheet.write(0, 8, 'Cromossoma em BIN') 
+    worksheet.write(0, 9, 'Probabilidade de Recombinação')
+    worksheet.write(0, 10, 'Ponto de Corte Aleatório') 
+    worksheet.write(0, 11, 'Recombinação')
+    worksheet.write(0, 12, 'Mutação')       
 
     lista_invertida = transpose(lista)
     row = 1 
@@ -142,52 +158,69 @@ def transpose(array):
 def get_2_highest():
      for k in range(len(lista)+1):
         try:
-            lista_avaliacao.append(lista[k][3])
+            lista_avaliacao.append(lista[k][col_avaliacao])
         except IndexError:
             break
-
+        
      lista_avaliacao.sort()
+     
      print("Melhor Individuo: ",round(lista_avaliacao[-1],4))
      
      for j in range(len(lista)+1):
             try:
-                if(lista_avaliacao[-1] == lista[j][3]):
+                if(lista_avaliacao[-1] == lista[j][col_avaliacao]):
                     posicao_roleta.append(j)
             except IndexError:
                 break
 
      for j in range(len(lista)+1):
             try:
-                if(lista_avaliacao[-2] == lista[j][3] ):
+                if(lista_avaliacao[-2] == lista[j][col_avaliacao] ):
                     posicao_roleta.append(j)
             except IndexError:
                 break     
-
-
+     print("LISTA AVALIACAO",lista_avaliacao) 
+     lista_avaliacao.clear()
    ##  print(lista_avaliacao[-1]) VALOR MAIS ALTO
    ##  print(lista_avaliacao[-2]) 2 VALOR MAIS ALTO
+     
 
 def position_bin_to_list(array):
 
-     for j in range(len(lista)+1):
+
+    for i in range(len(lista)+1):
             try:
-                bin_value = lista[array[j]][1]
-                lista[j].extend([bin_value])
+                lista[i].extend(["i"+str(array[i]+2)]) #PERMITE VER A POSICAO DO PAI NO EXCEL COMO NO EXCEL COMECA EM 0 SOMA 1 PARA ALINHAR,
+                                                       # E COMO COMECA A ESCREVER NA LINHA 1, SOMA MAIS OUTRO 1 ficando 2
             except IndexError:
-                break     
+                break
+    #view_output()
+
+    for j in range(len(lista)+1):
+        try:
+            bin_value = lista[array[j]][col_binario]
+            lista[j].extend([bin_value])
+        except IndexError:
+                break
+    
+    posicao_roleta.clear()
+    lista_roleta.clear()
+    lista_aleatorio.clear()
+     
 
 def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA ROLETA
+    
     k = 2
     while k <= tamanho_população:
         try:
-            lista_aleatorio.append(lista[k][6])
+            lista_aleatorio.append(lista[k][col_aleatorio_roleta])
         except IndexError:
             break 
         k+=1
 
     for j in range(len(lista)+1):
             try:
-                lista_roleta.append(lista[j][5])
+                lista_roleta.append(lista[j][col_seg_roleta])
             except IndexError:
                 break
 
@@ -201,11 +234,12 @@ def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA 
                     break          
             except IndexError:
                 break
-  ##  print("Pos",posicao_roleta)
-  ##  print("R",lista_roleta)
-  ##  print("ALE",lista_aleatorio)
+   # print("Pos",posicao_roleta)
+   # print("R",lista_roleta)
+   # print("ALE",lista_aleatorio)
 
     position_bin_to_list(posicao_roleta)
+    
 
 
 def replace_str_index(text,index=0,size=0,replacement=''):
@@ -225,23 +259,26 @@ def recombinacao(ptcorte,firstbin,secondbin):
     return child_1, child_2
 
 def probabilidade_recombinacao(prob):
+   # view_output()
     firstbin = 0
     secondbin = 0
-    lista[0].extend([lista[0][7]])
-    lista[1].extend([lista[1][7]])
+    lista[0].extend([lista[0][col_cromossoma_selected]])
+    lista[1].extend([lista[1][col_cromossoma_selected]])
     j = 2
     while j <= (len(lista)):
         try:
             
-            if(lista[j][8] <= float(prob) and lista[j+1][8] <= float(prob)):
-                firstbin = lista[j][7]
-                secondbin = lista[j+1][7]
-                child1 , child2 =  recombinacao(lista[j][9],firstbin,secondbin)
+            if(lista[j][col_recomb_prob] <= float(prob) and lista[j+1][col_recomb_prob] <= float(prob)):
+                firstbin = lista[j][col_cromossoma_selected]
+                secondbin = lista[j+1][col_cromossoma_selected]
+                print("PONTO:",lista[j][col_pontoCorte])
+                child1 , child2 =  recombinacao(lista[j][col_pontoCorte],firstbin,secondbin)
+                
                 lista[j].extend([child1])
                 lista[j+1].extend([child2])
-            elif(lista[j][8] > float(prob) and lista[j+1][8] > float(prob)):
-                lista[j].extend([lista[j][7]])
-                lista[j+1].extend([lista[j+1][7]])
+            elif(lista[j][col_recomb_prob] > float(prob) and lista[j+1][col_recomb_prob] > float(prob)):
+                lista[j].extend([lista[j][col_cromossoma_selected]])
+                lista[j+1].extend([lista[j+1][col_cromossoma_selected]])
         except IndexError:
             break
         j+=2
@@ -266,7 +303,7 @@ def mutacao():
     j = 0
     while j <= (len(lista)-1):
         try:
-           lista[j].extend([lista[j][10]])
+           lista[j].extend([lista[j][col_recombinacao]])
         except IndexError:
             break
         j+=1
@@ -283,7 +320,7 @@ def mutacao():
         val = generate_random(4)
 
       ##  print("VAl",val)
-        to_mutate = lista[val][11]
+        to_mutate = lista[val][col_mutacao]
 
         #tamanho_individuo_mutacao = len(to_mutate)-1
 
@@ -298,7 +335,7 @@ def mutacao():
       ##  print(gene_pos)
       ##  print(to_mutate[gene_pos])
       ##  print(after_mutate)
-        lista[val][10] = after_mutate
+        lista[val][col_recombinacao] = after_mutate
 
         i+=1
 
@@ -308,13 +345,11 @@ def reset_and_set():
     lista_decimais = []
     for j in range(len(lista)+1):
             try:
-                lista_mutacao.append(lista[j][11])
+                lista_mutacao.append(lista[j][col_mutacao])
             except IndexError:
                 break
 
     lista.clear()
-    
-
     for i in range(len(lista_mutacao)+1):
             try:
                 lista_decimais.append(int(lista_mutacao[i],2))
@@ -332,6 +367,9 @@ def reset_and_set():
         lista.append([lista_decimais[i],lista_mutacao[i],valor_real,merito])
         i+=1
 
+
+def view_output():
+    print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
 
 def clear():    #Function to clear console after exit input
     os.system('cls' if os.name=='nt' else 'clear')
@@ -374,14 +412,14 @@ while j <= int(numero_geracoes):
     generate_random(2)
     get_2_highest()
     locate_in_interval()
-    generate_random(3)
+    generate_random(3) ##Aleatorio Roleta
     generate_pontosCorte()
     probabilidade_recombinacao(val_prob_recombinacao)
     mutacao()
     if int(state) == 1:
         savetoexcel(j)
     if int(state_view) == 1:
-        print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
+        view_output()
     reset_and_set()
     j+=1
 workbook.close()
