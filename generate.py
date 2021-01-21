@@ -183,7 +183,6 @@ def get_2_highest():
                     posicao_roleta.append(j)
             except IndexError:
                 break     
-     print("LISTA AVALIACAO",lista_avaliacao) 
      lista_avaliacao.clear()
    ##  print(lista_avaliacao[-1]) VALOR MAIS ALTO
    ##  print(lista_avaliacao[-2]) 2 VALOR MAIS ALTO
