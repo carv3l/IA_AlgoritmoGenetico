@@ -7,24 +7,32 @@ import numpy as np
 import os
 
 
+
+######################## DECLARAÇÃO DE VARIAVEIS ########################################
+
+#VARIAVEIS
 numero_geracoes = 0
 rand_decimal = 0
 converted_to_bin = 0
 valor_real = 0
 merito = 0
-lista = []
-lista_invertida = []
-lista_avaliacao =  []
-lista_roleta = []
-lista_aleatorio = []
-posicao_roleta= []
-media_merito = 0
-sT_maxvalue =0
-nD_maxvalue = 0
 tamanho_população = 0
 val_prob_recombinacao = 0
-tamanho_individuo_mutacao = 0
 
+
+
+##LISTAS
+
+lista = [] # LISTA PRINCIPAL DA GERACAO
+lista_invertida = [] # INVERTER A LISTA PARA PARSAR PARA EXCEL
+lista_avaliacao =  [] #LISTA DE AVALIACAO PARA FAZER MEDIA E ASSIM....
+lista_roleta = [] 
+lista_aleatorio = []
+posicao_roleta= []
+
+
+
+##ESTAS VARIAVEIS INDICAM A POSICAO DA COLUNA DA LISTA DA GERACAO
 col_decimal = 0
 col_binario = 1
 col_valoreal = 2
@@ -40,17 +48,15 @@ col_recombinacao = 11
 col_mutacao = 12
 
 
-
-
-
-saveiter = 0
+#ABRIR O EXCEL
 workbook = xlsxwriter.Workbook('GA.xlsx')
 
+
+############################################## FUNÇÕES ############################################
 def closeExcelIfOpen():
     fo = open(r'GA.xlsx')
     print("Name of the file: ", fo.name)
     os.close(fo.fileno())
-
 
 
 def conv_to_bin(decimal):
@@ -60,11 +66,9 @@ def conv_to_bin(decimal):
                 valor_bin = ''.join(('0',valor_bin))
     return valor_bin
 
-
 def calc_valor_real(decimal):
     return 1 + decimal *(24/(pow(2,18)-1))
     
-
 def func_avaliacao(value_real):
     return pow((value_real-15),2)
 
@@ -118,7 +122,6 @@ def calc_average():
         except IndexError:
             break 
 
-
 def segmento_Roleta():
     roleta_value = 0
     for k in range(len(lista)+1):
@@ -152,7 +155,6 @@ def savetoexcel(iteration):## PARSAR PARA EXCEL
         worksheet.write_column(row, col, data)
     print("Salvo em excel como GER",str(iteration))
 
-
 def transpose(array):
     return list(itertools.zip_longest(*array))
 
@@ -185,7 +187,6 @@ def get_2_highest():
    ##  print(lista_avaliacao[-1]) VALOR MAIS ALTO
    ##  print(lista_avaliacao[-2]) 2 VALOR MAIS ALTO
      
-
 def position_bin_to_list(array):
 
 
@@ -208,7 +209,6 @@ def position_bin_to_list(array):
     lista_roleta.clear()
     lista_aleatorio.clear()
      
-
 def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA ROLETA
     
     k = 2
@@ -241,11 +241,8 @@ def locate_in_interval(): #LOCALIZAR O ELEMENTO ALEATORIO DENTRO DO SEGMENTO DA 
 
     position_bin_to_list(posicao_roleta)
     
-
-
 def replace_str_index(text,index=0,size=0,replacement=''):
     return '%s%s%s'%(text[:index],replacement,text[index+size:])
-
 
 def recombinacao(ptcorte,firstbin,secondbin):
     firsthalf = 0
@@ -283,8 +280,6 @@ def probabilidade_recombinacao(prob):
             break
         j+=2
 
-
-
 def generate_pontosCorte():
     i = 0
     while i <= len(lista):
@@ -296,9 +291,6 @@ def generate_pontosCorte():
             break
         i +=2
    
-
-
-
 def mutacao():
     j = 0
     while j <= (len(lista)-1):
@@ -322,8 +314,6 @@ def mutacao():
       ##  print("VAl",val)
         to_mutate = lista[val][col_mutacao]
 
-        #tamanho_individuo_mutacao = len(to_mutate)-1
-
         gene_pos = generate_random(5)
 
         if(to_mutate[gene_pos] == '0'):
@@ -338,7 +328,6 @@ def mutacao():
         lista[val][col_recombinacao] = after_mutate
 
         i+=1
-
 
 def reset_and_set():
     lista_mutacao = []
@@ -367,7 +356,6 @@ def reset_and_set():
         lista.append([lista_decimais[i],lista_mutacao[i],valor_real,merito])
         i+=1
 
-
 def view_output():
     print ('\n'.join([ str(myelement) for myelement in lista])) ##Imprimir elemento por linha
 
@@ -375,7 +363,9 @@ def clear():    #Function to clear console after exit input
     os.system('cls' if os.name=='nt' else 'clear')
 
 
- ################### INICIO DO CÓDIGO #####################################         
+
+
+############################################# INICIO DO CÓDIGO #####################################         
 
 ##closeExcelIfOpen()
 
