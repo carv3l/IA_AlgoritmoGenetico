@@ -32,12 +32,13 @@ col_avaliacao = 3
 col_prob_select = 4
 col_seg_roleta = 5
 col_aleatorio_roleta = 6
+col_posicao_pai = 7
 col_cromossoma_selected = 8
 col_recomb_prob = 9
 col_pontoCorte = 10
 col_recombinacao = 11
 col_mutacao = 12
-#col_
+
 
 
 
@@ -271,7 +272,6 @@ def probabilidade_recombinacao(prob):
             if(lista[j][col_recomb_prob] <= float(prob) and lista[j+1][col_recomb_prob] <= float(prob)):
                 firstbin = lista[j][col_cromossoma_selected]
                 secondbin = lista[j+1][col_cromossoma_selected]
-                print("PONTO:",lista[j][col_pontoCorte])
                 child1 , child2 =  recombinacao(lista[j][col_pontoCorte],firstbin,secondbin)
                 
                 lista[j].extend([child1])
