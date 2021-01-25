@@ -128,7 +128,7 @@ def segmento_Roleta():
     for k in range(len(lista)+1):
         try:
             roleta_value += lista[k][col_prob_select]
-            lista[k].extend([round(roleta_value,int(round_value))])
+            lista[k].extend([round(roleta_value,int(2))])
         except IndexError:
             break 
 
@@ -273,7 +273,7 @@ def probabilidade_recombinacao(prob):
                 
                 lista[j].extend([child1])
                 lista[j+1].extend([child2])
-            elif(lista[j][col_recomb_prob] > float(prob) and lista[j+1][col_recomb_prob] > float(prob)):
+            elif(lista[j][col_recomb_prob] > float(prob) and lista[j+1][col_recomb_prob] > float(prob)):# CASO O VALOR SEJA MAIS ALTO QUE O DEFINIDO, APENAS EXTENDE A LISTA
                 lista[j].extend([lista[j][col_cromossoma_selected]])
                 lista[j+1].extend([lista[j+1][col_cromossoma_selected]])
         except IndexError:
